@@ -1,0 +1,13 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: change resolv base file
+    shell: echo "nameserver 223.5.5.5\nnameserver 223.6.6.6" >> /etc/resolvconf/resolv.conf.d/base
+    notify:
+      - reload networking
+  handlers:
+    - name: reload networking
+      service: 
+        name: networking
+        state: restarted
